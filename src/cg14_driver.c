@@ -54,8 +54,8 @@ static void	CG14AdjustFrame(int scrnIndex, int x, int y, int flags);
 
 /* Optional functions */
 static void	CG14FreeScreen(int scrnIndex, int flags);
-static ModeStatus CG14ValidMode(int scrnIndex, DisplayModePtr mode,
-				Bool verbose, int flags);
+static int	CG14ValidMode(int scrnIndex, DisplayModePtr mode, Bool verbose,
+			     int flags);
 
 void CG14Sync(ScrnInfoPtr pScrn);
 
@@ -98,7 +98,7 @@ static XF86ModuleVersionInfo suncg14VersRec =
 	MODULEVENDORSTRING,
 	MODINFOSTRING1,
 	MODINFOSTRING2,
-	XORG_VERSION_CURRENT,
+	XF86_VERSION_CURRENT,
 	CG14_MAJOR_VERSION, CG14_MINOR_VERSION, CG14_PATCHLEVEL,
 	ABI_CLASS_VIDEODRV,
 	ABI_VIDEODRV_VERSION,
@@ -618,7 +618,7 @@ CG14FreeScreen(int scrnIndex, int flags)
 /* Checks if a mode is suitable for the selected chipset. */
 
 /* Optional */
-static ModeStatus
+static int
 CG14ValidMode(int scrnIndex, DisplayModePtr mode, Bool verbose, int flags)
 {
     if (mode->Flags & V_INTERLACE)
