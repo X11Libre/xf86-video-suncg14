@@ -20,7 +20,7 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/suncg14/cg14.h,v 1.3 2001/05/04 19:05:45 dawes Exp $ */
+/* $XFree86: xc/programs/Xserver/hw/xfree86/drivers/suncg14/cg14.h,v 1.2 2001/03/03 22:41:33 tsi Exp $ */
 
 #ifndef CG14_H
 #define CG14_H
@@ -29,7 +29,7 @@
 #include "xf86_OSproc.h"
 #include "xf86_ansic.h"
 #include "xf86RamDac.h"
-#include "Xmd.h"
+#include <X11/Xmd.h>
 #include "gcstruct.h"
 #include "xf86sbusBus.h"
 
