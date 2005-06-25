@@ -54,8 +54,8 @@ static void	CG14AdjustFrame(int scrnIndex, int x, int y, int flags);
 
 /* Optional functions */
 static void	CG14FreeScreen(int scrnIndex, int flags);
-static int	CG14ValidMode(int scrnIndex, DisplayModePtr mode, Bool verbose,
-			     int flags);
+static ModeStatus CG14ValidMode(int scrnIndex, DisplayModePtr mode,
+				Bool verbose, int flags);
 
 void CG14Sync(ScrnInfoPtr pScrn);
 
@@ -74,7 +74,7 @@ void CG14Sync(ScrnInfoPtr pScrn);
  * an upper-case version of the driver name.
  */
 
-DriverRec SUNCG14 = {
+_X_EXPORT DriverRec SUNCG14 = {
     VERSION,
     CG14_DRIVER_NAME,
     CG14Identify,
@@ -98,7 +98,7 @@ static XF86ModuleVersionInfo suncg14VersRec =
 	MODULEVENDORSTRING,
 	MODINFOSTRING1,
 	MODINFOSTRING2,
-	XF86_VERSION_CURRENT,
+	XORG_VERSION_CURRENT,
 	CG14_MAJOR_VERSION, CG14_MINOR_VERSION, CG14_PATCHLEVEL,
 	ABI_CLASS_VIDEODRV,
 	ABI_VIDEODRV_VERSION,
@@ -106,7 +106,11 @@ static XF86ModuleVersionInfo suncg14VersRec =
 	{0,0,0,0}
 };
 
-XF86ModuleData suncg14ModuleData = { &suncg14VersRec, cg14Setup, NULL };
+_X_EXPORT XF86ModuleData suncg14ModuleData = {
+	&suncg14VersRec,
+	cg14Setup,
+	NULL
+};
 
 pointer
 cg14Setup(pointer module, pointer opts, int *errmaj, int *errmin)
@@ -618,7 +622,7 @@ CG14FreeScreen(int scrnIndex, int flags)
 /* Checks if a mode is suitable for the selected chipset. */
 
 /* Optional */
-static int
+static ModeStatus
 CG14ValidMode(int scrnIndex, DisplayModePtr mode, Bool verbose, int flags)
 {
     if (mode->Flags & V_INTERLACE)
