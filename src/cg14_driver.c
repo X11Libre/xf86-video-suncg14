@@ -67,9 +67,9 @@ void CG14Sync(ScrnInfoPtr pScrn);
 #define CG14_VERSION 4000
 #define CG14_NAME "SUNCG14"
 #define CG14_DRIVER_NAME "suncg14"
-#define CG14_MAJOR_VERSION 1
-#define CG14_MINOR_VERSION 1
-#define CG14_PATCHLEVEL 0
+#define CG14_MAJOR_VERSION PACKAGE_VERSION_MAJOR
+#define CG14_MINOR_VERSION PACKAGE_VERSION_MINOR
+#define CG14_PATCHLEVEL PACKAGE_VERSION_PATCHLEVEL
 
 /* 
  * This contains the functions needed by the server after loading the driver
