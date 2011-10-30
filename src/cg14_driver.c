@@ -167,7 +167,7 @@ CG14FreeRec(ScrnInfoPtr pScrn)
 
     pCg14 = GET_CG14_FROM_SCRN(pScrn);
 
-    xfree(pScrn->driverPrivate);
+    free(pScrn->driverPrivate);
     pScrn->driverPrivate = NULL;
 
     return;
@@ -237,7 +237,7 @@ CG14Probe(DriverPtr drv, int flags)
 		   devSections, numDevSections,
 		   drv, &usedChips);
 				    
-    xfree(devSections);
+    free(devSections);
     if (numUsed <= 0)
 	return FALSE;
 
@@ -271,9 +271,9 @@ CG14Probe(DriverPtr drv, int flags)
 	    xf86AddEntityToScreen(pScrn, pEnt->index);
 	    foundScreen = TRUE;
 	}
-	xfree(pEnt);
+	free(pEnt);
     }
-    xfree(usedChips);
+    free(usedChips);
     return foundScreen;
 }
 
@@ -349,7 +349,7 @@ CG14PreInit(ScrnInfoPtr pScrn, int flags)
     /* Collect all of the relevant option flags (fill in pScrn->options) */
     xf86CollectOptions(pScrn, NULL);
     /* Process the options */
-    if (!(pCg14->Options = xalloc(sizeof(CG14Options))))
+    if (!(pCg14->Options = malloc(sizeof(CG14Options))))
 	return FALSE;
     memcpy(pCg14->Options, CG14Options, sizeof(CG14Options));
     xf86ProcessOptions(pScrn->scrnIndex, pScrn->options, pCg14->Options);
