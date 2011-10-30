@@ -25,6 +25,7 @@
 #include "config.h"
 #endif
 
+#include <sys/ioctl.h>
 #include <string.h>
 
 #include "xf86.h"
