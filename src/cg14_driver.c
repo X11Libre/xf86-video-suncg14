@@ -38,27 +38,28 @@
 #include "xf86cmap.h"
 #include "cg14.h"
 
+#include "compat-api.h"
+
 static const OptionInfoRec * CG14AvailableOptions(int chipid, int busid);
 static void	CG14Identify(int flags);
 static Bool	CG14Probe(DriverPtr drv, int flags);
 static Bool	CG14PreInit(ScrnInfoPtr pScrn, int flags);
-static Bool	CG14ScreenInit(int Index, ScreenPtr pScreen, int argc,
-			      char **argv);
-static Bool	CG14EnterVT(int scrnIndex, int flags);
-static void	CG14LeaveVT(int scrnIndex, int flags);
-static Bool	CG14CloseScreen(int scrnIndex, ScreenPtr pScreen);
+static Bool	CG14ScreenInit(SCREEN_INIT_ARGS_DECL);
+static Bool	CG14EnterVT(VT_FUNC_ARGS_DECL);
+static void	CG14LeaveVT(VT_FUNC_ARGS_DECL);
+static Bool	CG14CloseScreen(CLOSE_SCREEN_ARGS_DECL);
 static Bool	CG14SaveScreen(ScreenPtr pScreen, int mode);
 static void	CG14InitCplane24(ScrnInfoPtr pScrn);
 static void	CG14ExitCplane24(ScrnInfoPtr pScrn);
 
 /* Required if the driver supports mode switching */
-static Bool	CG14SwitchMode(int scrnIndex, DisplayModePtr mode, int flags);
+static Bool	CG14SwitchMode(SWITCH_MODE_ARGS_DECL);
 /* Required if the driver supports moving the viewport */
-static void	CG14AdjustFrame(int scrnIndex, int x, int y, int flags);
+static void	CG14AdjustFrame(ADJUST_FRAME_ARGS_DECL);
 
 /* Optional functions */
-static void	CG14FreeScreen(int scrnIndex, int flags);
-static ModeStatus CG14ValidMode(int scrnIndex, DisplayModePtr mode,
+static void	CG14FreeScreen(FREE_SCREEN_ARGS_DECL);
+static ModeStatus CG14ValidMode(SCRN_ARG_TYPE arg, DisplayModePtr mode,
 				Bool verbose, int flags);
 
 void CG14Sync(ScrnInfoPtr pScrn);
@@ -425,7 +426,7 @@ CG14PreInit(ScrnInfoPtr pScrn, int flags)
 /* This gets called at the start of each server generation */
 
 static Bool
-CG14ScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
+CG14ScreenInit(SCREEN_INIT_ARGS_DECL)
 {
     ScrnInfoPtr pScrn;
     Cg14Ptr pCg14;
@@ -435,7 +436,7 @@ CG14ScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
     /* 
      * First get the ScrnInfoRec
      */
-    pScrn = xf86Screens[pScreen->myNum];
+    pScrn = xf86ScreenToScrn(pScreen);
 
     pCg14 = GET_CG14_FROM_SCRN(pScrn);
 
@@ -539,7 +540,7 @@ CG14ScreenInit(int scrnIndex, ScreenPtr pScreen, int argc, char **argv)
 
 /* Usually mandatory */
 static Bool
-CG14SwitchMode(int scrnIndex, DisplayModePtr mode, int flags)
+CG14SwitchMode(SWITCH_MODE_ARGS_DECL)
 {
     return TRUE;
 }
@@ -551,7 +552,7 @@ CG14SwitchMode(int scrnIndex, DisplayModePtr mode, int flags)
  */
 /* Usually mandatory */
 static void 
-CG14AdjustFrame(int scrnIndex, int x, int y, int flags)
+CG14AdjustFrame(ADJUST_FRAME_ARGS_DECL)
 {
     /* we don't support virtual desktops */
     return;
@@ -564,9 +565,9 @@ CG14AdjustFrame(int scrnIndex, int x, int y, int flags)
 
 /* Mandatory */
 static Bool
-CG14EnterVT(int scrnIndex, int flags)
+CG14EnterVT(VT_FUNC_ARGS_DECL)
 {
-    ScrnInfoPtr pScrn = xf86Screens[scrnIndex];
+    SCRN_INFO_PTR(arg);
 
     CG14InitCplane24 (pScrn);
     return TRUE;
@@ -579,9 +580,9 @@ CG14EnterVT(int scrnIndex, int flags)
 
 /* Mandatory */
 static void
-CG14LeaveVT(int scrnIndex, int flags)
+CG14LeaveVT(VT_FUNC_ARGS_DECL)
 {
-    ScrnInfoPtr pScrn = xf86Screens[scrnIndex];
+    SCRN_INFO_PTR(arg);
 
     CG14ExitCplane24 (pScrn);
     return;
@@ -595,9 +596,9 @@ CG14LeaveVT(int scrnIndex, int flags)
 
 /* Mandatory */
 static Bool
-CG14CloseScreen(int scrnIndex, ScreenPtr pScreen)
+CG14CloseScreen(CLOSE_SCREEN_ARGS_DECL)
 {
-    ScrnInfoPtr pScrn = xf86Screens[scrnIndex];
+    ScrnInfoPtr pScrn = xf86ScreenToScrn(pScreen);
     Cg14Ptr pCg14 = GET_CG14_FROM_SCRN(pScrn);
 
     pScrn->vtSema = FALSE;
@@ -608,8 +609,7 @@ CG14CloseScreen(int scrnIndex, ScreenPtr pScreen)
     xf86UnmapSbusMem(pCg14->psdp, pCg14->xlut, 4096);
     
     pScreen->CloseScreen = pCg14->CloseScreen;
-    return (*pScreen->CloseScreen)(scrnIndex, pScreen);
-    return FALSE;
+    return (*pScreen->CloseScreen)(CLOSE_SCREEN_ARGS);
 }
 
 
@@ -617,9 +617,10 @@ CG14CloseScreen(int scrnIndex, ScreenPtr pScreen)
 
 /* Optional */
 static void
-CG14FreeScreen(int scrnIndex, int flags)
+CG14FreeScreen(FREE_SCREEN_ARGS_DECL)
 {
-    CG14FreeRec(xf86Screens[scrnIndex]);
+    SCRN_INFO_PTR(arg);
+    CG14FreeRec(pScrn);
 }
 
 
@@ -627,7 +628,7 @@ CG14FreeScreen(int scrnIndex, int flags)
 
 /* Optional */
 static ModeStatus
-CG14ValidMode(int scrnIndex, DisplayModePtr mode, Bool verbose, int flags)
+CG14ValidMode(SCRN_ARG_TYPE arg, DisplayModePtr mode, Bool verbose, int flags)
 {
     if (mode->Flags & V_INTERLACE)
 	return(MODE_BAD);
