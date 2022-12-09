@@ -1,6 +1,9 @@
 xf86-video-suncg14 - CG14 video driver for the Xorg X server
 ------------------------------------------------------------
 
+The suncg14 driver supports the built-in frame buffer in the
+SPARCstation 10sx and SPARCstation 20 workstations.
+
 All questions regarding this software should be directed at the
 Xorg mailing list:
 
