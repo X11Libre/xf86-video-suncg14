@@ -162,12 +162,8 @@ CG14GetRec(ScrnInfoPtr pScrn)
 static void
 CG14FreeRec(ScrnInfoPtr pScrn)
 {
-    Cg14Ptr pCg14;
-
     if (pScrn->driverPrivate == NULL)
 	return;
-
-    pCg14 = GET_CG14_FROM_SCRN(pScrn);
 
     free(pScrn->driverPrivate);
     pScrn->driverPrivate = NULL;
