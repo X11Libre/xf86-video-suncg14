@@ -155,7 +155,7 @@ CG14GetRec(ScrnInfoPtr pScrn)
     if (pScrn->driverPrivate != NULL)
 	return TRUE;
 
-    pScrn->driverPrivate = xnfcalloc(sizeof(Cg14Rec), 1);
+    pScrn->driverPrivate = XNFcallocarray(sizeof(Cg14Rec), 1);
     return TRUE;
 }
 
