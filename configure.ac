@@ -23,7 +23,7 @@
 # Initialize Autoconf
 AC_PREREQ([2.60])
 AC_INIT([xf86-video-suncg14],
-        [1.1.3],
+        [1.2.0],
         [https://gitlab.freedesktop.org/xorg/driver/xf86-video-suncg14/-/issues],
         [xf86-video-suncg14])
 AC_CONFIG_SRCDIR([Makefile.am])
