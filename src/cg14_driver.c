@@ -93,8 +93,6 @@ static const OptionInfoRec CG14Options[] = {
     { -1,			NULL,		OPTV_NONE,	{0}, FALSE }
 };
 
-#ifdef XFree86LOADER
-
 static MODULESETUPPROTO(cg14Setup);
 
 static XF86ModuleVersionInfo suncg14VersRec =
@@ -141,8 +139,6 @@ cg14Setup(pointer module, pointer opts, int *errmaj, int *errmin)
 	return NULL;
     }
 }
-
-#endif /* XFree86LOADER */
 
 static Bool
 CG14GetRec(ScrnInfoPtr pScrn)
